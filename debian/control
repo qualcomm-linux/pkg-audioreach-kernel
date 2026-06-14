@@ -1,0 +1,19 @@
+Source: audioreach-kernel
+Section: non-free/kernel
+Priority: optional
+Maintainer: Sairamreddy Bojja <sbojja@qti.qualcomm.com>
+Build-Depends: debhelper-compat (= 13), dh-sequence-dkms, cpio
+Rules-Requires-Root: no
+Standards-Version: 4.7.2
+Homepage: https://github.com/AudioReach/audioreach-kernel
+
+Package: audioreach-kernel-dkms
+Architecture: all
+Depends: dkms, ${misc:Depends}
+Description: TBC
+
+Package: audioreach-kernel-dev
+Architecture: arm64
+Description: TBC
+Section: libdevel
+Depends: ${misc:Depends}
