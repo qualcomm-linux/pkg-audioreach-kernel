@@ -2,6 +2,7 @@
 // Copyright (c) 2021, Linaro Limited
 // Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
 
+#include "ar_kcompat.h"
 #include <linux/init.h>
 #include <linux/kernel.h>
 #include <linux/module.h>
@@ -928,4 +929,4 @@ void q6apm_audio_mem_exit(void)
 
 MODULE_DESCRIPTION("Q6APM audio mem driver");
 MODULE_LICENSE("GPL");
-MODULE_IMPORT_NS("DMA_BUF");
+AR_MODULE_IMPORT_NS(DMA_BUF);
