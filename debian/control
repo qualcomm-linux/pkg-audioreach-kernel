@@ -10,10 +10,24 @@ Homepage: https://github.com/AudioReach/audioreach-kernel
 Package: audioreach-kernel-dkms
 Architecture: all
 Depends: dkms, ${misc:Depends}
-Description: TBC
+Description: AudioReach kernel drivers (DKMS)
+ AudioReach Kernel provides out-of-tree Linux kernel drivers
+ that enable communication between the AudioReach signal
+ processing framework running on an audio DSP and userspace
+ graph service libraries.
+ .
+ These drivers integrate AudioReach with the Linux kernel,
+ allowing control and data exchange between host CPU and DSP-
+ based audio processing pipelines.
+ .
+ This package uses DKMS to automatically build and install the
+ modules for supported kernel versions.
 
 Package: audioreach-kernel-dev
 Architecture: arm64
-Description: TBC
+Description: Development headers for AudioReach kernel drivers
+ This package provides header files and interfaces required to
+ build userspace applications or kernel modules that integrate
+ with AudioReach kernel drivers.
 Section: libdevel
 Depends: ${misc:Depends}
