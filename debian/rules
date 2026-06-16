@@ -13,6 +13,7 @@ override_dh_install:
 		-path ./.pc -prune -o \
 		-path ./.git -prune -o \
 		-path ./.github -prune -o \
+		-name ".gitignore" -prune -o \
 		-print0 | cpio -0p $(DKMS_STAGED)/
 	dh_install
 
