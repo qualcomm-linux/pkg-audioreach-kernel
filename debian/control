@@ -23,12 +23,13 @@ Description: AudioReach kernel drivers (DKMS)
  This package uses DKMS to automatically build and install the
  modules for supported kernel versions.
 
-Package: audioreach-kernel
+Package: audioreach-config
 Architecture: arm64
 Depends: ${misc:Depends}
-Description: AudioReach kernel components and configs
- AudioReach kernel module support and configuration files
- including udev rules and modprobe blacklist.
+Description: AudioReach userspace configuration
+ This package contains:
+  - udev rules
+  - modprobe configuration
 
 Package: audioreach-kernel-dev
 Architecture: arm64
