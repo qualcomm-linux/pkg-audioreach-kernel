@@ -8,7 +8,7 @@ Standards-Version: 4.7.2
 Homepage: https://github.com/AudioReach/audioreach-kernel
 
 Package: audioreach-kernel-dkms
-Architecture: all
+Architecture: arm64
 Depends: dkms, ${misc:Depends}
 Description: AudioReach kernel drivers (DKMS)
  AudioReach Kernel provides out-of-tree Linux kernel drivers
@@ -22,6 +22,13 @@ Description: AudioReach kernel drivers (DKMS)
  .
  This package uses DKMS to automatically build and install the
  modules for supported kernel versions.
+
+Package: audioreach-kernel
+Architecture: arm64
+Depends: ${misc:Depends}
+Description: AudioReach kernel components and configs
+ AudioReach kernel module support and configuration files
+ including udev rules and modprobe blacklist.
 
 Package: audioreach-kernel-dev
 Architecture: arm64
