@@ -1,0 +1,2 @@
+debian/audioreach.rules lib/udev/rules.d/
+debian/asoc-blacklist.conf etc/modprobe.d/
