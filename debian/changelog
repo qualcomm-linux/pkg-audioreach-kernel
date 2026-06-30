@@ -1,8 +1,9 @@
-audioreach-kernel (1.0.0-1) UNRELEASED; urgency=medium
+audioreach-kernel (1.0.1-1) UNRELEASED; urgency=medium
 
   * New upstream release
+  * New upstream release
 
- -- GitHub Service Bot <githubservice@qti.qualcomm.com>  Sun, 14 Jun 2026 09:00:13 +0000
+ -- GitHub Service Bot <githubservice@qti.qualcomm.com>  Tue, 30 Jun 2026 09:38:45 +0000
 
 audioreach-kernel (1.0.0-1) unstable; urgency=low
 
