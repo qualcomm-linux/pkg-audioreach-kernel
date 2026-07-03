@@ -1,8 +1,9 @@
-audioreach-kernel (1.0.1-0qli+staging1~bpo13+1~) UNRELEASED; urgency=medium
+audioreach-kernel (1.0.1-0qli+staging1~bpo13+1) trixie; urgency=medium
 
+  [ Agathe Porte ]
   * Rebuild for trixie.
 
- -- Agathe Porte <agathe.porte@oss.qualcomm.com>  Fri, 03 Jul 2026 13:18:12 +0200
+ -- root <root@73294fa45689>  Fri, 03 Jul 2026 11:19:55 +0000
 
 audioreach-kernel (1.0.1-0qli+staging1) forky; urgency=medium
 
