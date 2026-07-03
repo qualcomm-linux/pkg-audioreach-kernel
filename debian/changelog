@@ -1,5 +1,6 @@
-audioreach-kernel (1.0.1-0qli+staging1~) UNRELEASED; urgency=medium
+audioreach-kernel (1.0.1-0qli+staging1) forky; urgency=medium
 
+  [ Agathe Porte ]
   * Initial release.
 
- -- Agathe Porte <agathe.porte@oss.qualcomm.com>  Fri, 03 Jul 2026 11:39:49 +0200
+ -- root <root@253fe909be83>  Fri, 03 Jul 2026 11:14:56 +0000
