@@ -718,7 +718,6 @@ static void q6i2s_lpass_dai_shutdown(struct snd_pcm_substream *substream, struct
 		clk_disable_unprepare(dai_data->priv[dai->id].eclk);
 		dai_data->priv[dai->id].eclk_enabled = false;
 	}
-	q6apm_lpass_dai_shutdown(substream, dai);
 }
 
 static int q6i2s_set_sysclk(struct snd_soc_dai *dai, int clk_id, unsigned int freq, int dir)
@@ -802,7 +801,6 @@ static int of_q6apm_parse_dai_data(struct device *dev,
 		/* MI2S specific properties */
 		case PRIMARY_MI2S_RX ... QUATERNARY_MI2S_TX:
 		case QUINARY_MI2S_RX ... QUINARY_MI2S_TX:
-		case SENARY_MI2S_RX ... SENARY_MI2S_TX:
 			priv = &data->priv[id];
 			priv->mclk = of_clk_get_by_name(node, "mclk");
 			if (IS_ERR(priv->mclk)) {
