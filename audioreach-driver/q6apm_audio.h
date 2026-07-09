@@ -53,4 +53,8 @@ struct apm_module_param_data  {
 
 #define APM_MODULE_PARAM_DATA_SIZE sizeof(struct apm_module_param_data)
 
+struct snd_soc_dai_driver *
+	q6dsp_audio_ports_set_config(struct device *dev,
+				     struct q6dsp_audio_port_dai_driver_config *cfg,
+				     int *num_dais);
 #endif

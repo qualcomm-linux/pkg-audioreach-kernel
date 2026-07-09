@@ -8,6 +8,7 @@
 #include <sound/soc.h>
 #include <sound/soc-dapm.h>
 #include <sound/pcm.h>
+#include <sound/pcm_params.h>
 #include <linux/soundwire/sdw.h>
 #include <sound/jack.h>
 #include <linux/input-event-codes.h>
@@ -23,19 +24,6 @@
 	((rate) * (I2S_MCLKFS))
 #define I2S_BIT_RATE(rate, channels, format) \
 	((rate) * (channels) * (format))
-
-static struct snd_soc_dapm_widget qcs6490_dapm_widgets[] = {
-	SND_SOC_DAPM_HP("Headphone Jack", NULL),
-	SND_SOC_DAPM_MIC("Mic Jack", NULL),
-	SND_SOC_DAPM_SPK("DP0 Jack", NULL),
-	SND_SOC_DAPM_SPK("DP1 Jack", NULL),
-	SND_SOC_DAPM_SPK("DP2 Jack", NULL),
-	SND_SOC_DAPM_SPK("DP3 Jack", NULL),
-	SND_SOC_DAPM_SPK("DP4 Jack", NULL),
-	SND_SOC_DAPM_SPK("DP5 Jack", NULL),
-	SND_SOC_DAPM_SPK("DP6 Jack", NULL),
-	SND_SOC_DAPM_SPK("DP7 Jack", NULL),
-};
 
 struct snd_soc_common {
 	const char *driver_name;
@@ -77,6 +65,141 @@ static struct snd_soc_jack_pin qcs6490_headset_jack_pins[] = {
 		.pin = "Headphone Jack",
 		.mask = SND_JACK_HEADPHONE,
 	},
+};
+
+static char *qcs6490_wsa_spk_to_prefix(const char *spk_name)
+{
+	if (!strcmp(spk_name, "WooferLeft Speaker"))
+		return "WooferLeft";
+	if (!strcmp(spk_name, "TweeterLeft Speaker"))
+		return "TweeterLeft";
+	if (!strcmp(spk_name, "WooferRight Speaker"))
+		return "WooferRight";
+	if (!strcmp(spk_name, "TweeterRight Speaker"))
+		return "TweeterRight";
+	if (!strcmp(spk_name, "SpkrLeft Speaker"))
+		return "SpkrLeft";
+	if (!strcmp(spk_name, "SpkrRight Speaker"))
+		return "SpkrRight";
+
+	return NULL;
+}
+
+static void qcs6490_wsa_mute_stream(struct snd_soc_card *card,
+				    const char *prefix, int mute)
+{
+	struct snd_soc_pcm_runtime *rtd;
+	struct snd_soc_dai *cpu_dai, *codec_dai;
+	int i, ret;
+
+	for_each_card_rtds(card, rtd) {
+		cpu_dai = snd_soc_rtd_to_cpu(rtd, 0);
+		if (cpu_dai->id != WSA_CODEC_DMA_RX_0 &&
+		    cpu_dai->id != WSA_CODEC_DMA_RX_1)
+			continue;
+
+		for_each_rtd_codec_dais(rtd, i, codec_dai) {
+			const char *name_prefix;
+
+			if (!codec_dai->component || !codec_dai->driver ||
+			    !codec_dai->driver->ops ||
+			    !codec_dai->driver->ops->mute_stream)
+				continue;
+
+			name_prefix = codec_dai->component->name_prefix;
+			if (!name_prefix || strcmp(name_prefix, prefix))
+				continue;
+
+			ret = codec_dai->driver->ops->mute_stream(codec_dai, mute,
+						SNDRV_PCM_STREAM_PLAYBACK);
+			if (ret && ret != -ENOTSUPP)
+				dev_warn(card->dev,
+					 "mute_stream failed for %s on %s: %d\n",
+					 prefix, codec_dai->name, ret);
+			return;
+		}
+	}
+}
+
+static int qcs6490_wsa_spk_event(struct snd_soc_dapm_widget *w,
+				 struct snd_kcontrol *kcontrol,
+				 int event)
+{
+	char *prefix = qcs6490_wsa_spk_to_prefix(w->name);
+
+	if (!prefix)
+		return 0;
+
+	switch (event) {
+	case SND_SOC_DAPM_POST_PMU:
+		qcs6490_wsa_mute_stream(snd_soc_dapm_to_card(w->dapm), prefix, 0);
+		break;
+	case SND_SOC_DAPM_PRE_PMD:
+		qcs6490_wsa_mute_stream(snd_soc_dapm_to_card(w->dapm), prefix, 1);
+		break;
+	default:
+		break;
+	}
+
+	return 0;
+}
+
+static struct snd_soc_dapm_widget qcs6490_dapm_widgets[] = {
+	SND_SOC_DAPM_HP("Headphone Jack", NULL),
+	SND_SOC_DAPM_MIC("Mic Jack", NULL),
+	SND_SOC_DAPM_SPK("DP0 Jack", NULL),
+	SND_SOC_DAPM_SPK("DP1 Jack", NULL),
+	SND_SOC_DAPM_SPK("DP2 Jack", NULL),
+	SND_SOC_DAPM_SPK("DP3 Jack", NULL),
+	SND_SOC_DAPM_SPK("DP4 Jack", NULL),
+	SND_SOC_DAPM_SPK("DP5 Jack", NULL),
+	SND_SOC_DAPM_SPK("DP6 Jack", NULL),
+	SND_SOC_DAPM_SPK("DP7 Jack", NULL),
+	SND_SOC_DAPM_SPK("SpkrLeft Speaker", qcs6490_wsa_spk_event),
+	SND_SOC_DAPM_SPK("SpkrRight Speaker", qcs6490_wsa_spk_event),
+
+};
+
+static const struct snd_soc_dapm_route qcs6490_dapm_routes[] = {
+	{ "SpkrLeft Speaker", NULL, "SpkrLeft SPKR" },
+	{ "SpkrRight Speaker", NULL, "SpkrRight SPKR" },
+};
+
+static struct snd_soc_dapm_widget glymur_dapm_widgets[] = {
+	SND_SOC_DAPM_HP("Headphone Jack", NULL),
+	SND_SOC_DAPM_MIC("Mic Jack", NULL),
+	SND_SOC_DAPM_SPK("DP0 Jack", NULL),
+	SND_SOC_DAPM_SPK("DP1 Jack", NULL),
+	SND_SOC_DAPM_SPK("DP2 Jack", NULL),
+	SND_SOC_DAPM_SPK("DP3 Jack", NULL),
+	SND_SOC_DAPM_SPK("DP4 Jack", NULL),
+	SND_SOC_DAPM_SPK("DP5 Jack", NULL),
+	SND_SOC_DAPM_SPK("DP6 Jack", NULL),
+	SND_SOC_DAPM_SPK("DP7 Jack", NULL),
+	SND_SOC_DAPM_SPK("WooferLeft Speaker", qcs6490_wsa_spk_event),
+	SND_SOC_DAPM_SPK("TweeterLeft Speaker", qcs6490_wsa_spk_event),
+	SND_SOC_DAPM_SPK("WooferRight Speaker", qcs6490_wsa_spk_event),
+	SND_SOC_DAPM_SPK("TweeterRight Speaker", qcs6490_wsa_spk_event),
+};
+
+static const struct snd_soc_dapm_route glymur_dapm_routes[] = {
+	{ "WooferLeft Speaker", NULL, "WooferLeft SPKR" },
+	{ "TweeterLeft Speaker", NULL, "TweeterLeft SPKR" },
+	{ "WooferRight Speaker", NULL, "WooferRight SPKR" },
+	{ "TweeterRight Speaker", NULL, "TweeterRight SPKR" },
+};
+
+static struct snd_soc_dapm_widget sa8775p_dapm_widgets[] = {
+	SND_SOC_DAPM_HP("Headphone Jack", NULL),
+	SND_SOC_DAPM_MIC("Mic Jack", NULL),
+	SND_SOC_DAPM_SPK("DP0 Jack", NULL),
+	SND_SOC_DAPM_SPK("DP1 Jack", NULL),
+	SND_SOC_DAPM_SPK("DP2 Jack", NULL),
+	SND_SOC_DAPM_SPK("DP3 Jack", NULL),
+	SND_SOC_DAPM_SPK("DP4 Jack", NULL),
+	SND_SOC_DAPM_SPK("DP5 Jack", NULL),
+	SND_SOC_DAPM_SPK("DP6 Jack", NULL),
+	SND_SOC_DAPM_SPK("DP7 Jack", NULL),
 };
 
 static inline int qcs6490_get_mclk_freq(struct snd_pcm_hw_params *params)
@@ -167,7 +290,7 @@ static int qcs6490_snd_sdw_prepare(struct snd_pcm_substream *substream,
 	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
 	struct snd_soc_dai *cpu_dai = snd_soc_rtd_to_cpu(rtd, 0);
 	struct snd_soc_dai *codec_dai;
-	int ret, i;
+	int ret;
 
 	if (!sruntime)
 		return 0;
@@ -207,17 +330,6 @@ static int qcs6490_snd_sdw_prepare(struct snd_pcm_substream *substream,
 		return ret;
 	}
 	*stream_prepared  = true;
-
-	switch (cpu_dai->id) {
-	case WSA_CODEC_DMA_RX_0:
-		if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) {
-			for_each_rtd_codec_dais(rtd, i, codec_dai)
-				snd_soc_dai_digital_mute(codec_dai, 0, substream->stream);
-		}
-		break;
-	default:
-		break;
-	}
 
 	return ret;
 }
@@ -286,19 +398,6 @@ static void qcs6490_snd_shutdown(struct snd_pcm_substream *substream)
 	struct snd_soc_dai *cpu_dai = snd_soc_rtd_to_cpu(rtd, 0);
 	struct qcs6490_snd_data *pdata = snd_soc_card_get_drvdata(rtd->card);
 	struct sdw_stream_runtime *sruntime = pdata->sruntime[cpu_dai->id];
-	struct snd_soc_dai *codec_dai;
-	int i;
-
-	switch (cpu_dai->id) {
-	case WSA_CODEC_DMA_RX_0:
-		if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) {
-			for_each_rtd_codec_dais(rtd, i, codec_dai)
-				snd_soc_dai_digital_mute(codec_dai, 1, substream->stream);
-		}
-		break;
-	default:
-		break;
-	}
 
 	pdata->sruntime[cpu_dai->id] = NULL;
 	sdw_release_stream(sruntime);
@@ -574,8 +673,8 @@ static int qcs6490_snd_parse_of(struct snd_soc_card *card)
 	}
 
 	if (!card->dapm_widgets) {
-		card->dapm_widgets = qcom_jack_snd_widgets;
-		card->num_dapm_widgets = ARRAY_SIZE(qcom_jack_snd_widgets);
+		card->dapm_widgets = qcs6490_dapm_widgets;
+		card->num_dapm_widgets = ARRAY_SIZE(qcs6490_dapm_widgets);
 	}
 
 	return 0;
@@ -679,11 +778,11 @@ static int qcs6490_snd_hw_params(struct snd_pcm_substream *substream,
 	struct qcs6490_snd_data *pdata = snd_soc_card_get_drvdata(rtd->card);
 	int mclk_freq = qcs6490_get_mclk_freq(params);
 	int bclk_freq = qcs6490_get_bclk_freq(params);
+	int ret = 0;
 
 	switch (cpu_dai->id) {
 	case PRIMARY_MI2S_RX ... QUATERNARY_MI2S_TX:
 	case QUINARY_MI2S_RX ... QUINARY_MI2S_TX:
-	case SENARY_MI2S_RX ... SENARY_MI2S_TX:
 		ret = snd_soc_dai_set_fmt(cpu_dai, SND_SOC_DAIFMT_BP_FP);
 		if (ret && ret != -ENOTSUPP)
 			return ret;
@@ -809,9 +908,11 @@ static int qcs6490_platform_probe(struct platform_device *pdev)
 
 static struct snd_soc_common glymur_priv_data = {
 	.driver_name = "glymur",
-	.dapm_widgets = qcs6490_dapm_widgets,
-	.num_dapm_widgets = ARRAY_SIZE(qcs6490_dapm_widgets),
-	.num_wsa_spkr = 4;
+	.dapm_widgets = glymur_dapm_widgets,
+	.num_dapm_widgets = ARRAY_SIZE(glymur_dapm_widgets),
+	.dapm_routes = glymur_dapm_routes,
+	.num_dapm_routes = ARRAY_SIZE(glymur_dapm_routes),
+	.num_wsa_spkr = 4,
 	.wcd_jack = true,
 };
 
@@ -819,28 +920,31 @@ static struct snd_soc_common kaanapali_priv_data = {
 	.driver_name = "kaanapali",
 	.dapm_widgets = qcs6490_dapm_widgets,
 	.num_dapm_widgets = ARRAY_SIZE(qcs6490_dapm_widgets),
-	.num_wsa_spkr = 2;
+	.dapm_routes = qcs6490_dapm_routes,
+	.num_dapm_routes = ARRAY_SIZE(qcs6490_dapm_routes),
+	.num_wsa_spkr = 2,
 	.wcd_jack = true,
 };
 
 static struct snd_soc_common qcs9100_priv_data = {
 	.driver_name = "sa8775p",
-	.dapm_widgets = qcs6490_dapm_widgets,
-	.num_dapm_widgets = ARRAY_SIZE(qcs6490_dapm_widgets),
+	.dapm_widgets = sa8775p_dapm_widgets,
+	.num_dapm_widgets = ARRAY_SIZE(sa8775p_dapm_widgets),
 };
 
 static struct snd_soc_common qcs615_priv_data = {
 	.driver_name = "qcs615",
-	.dapm_widgets = qcs6490_dapm_widgets,
-	.num_dapm_widgets = ARRAY_SIZE(qcs6490_dapm_widgets),
-	.mi2s_mclk_enable = true,
+	.dapm_widgets = sa8775p_dapm_widgets,
+	.num_dapm_widgets = ARRAY_SIZE(sa8775p_dapm_widgets),
 };
 
 static struct snd_soc_common qcm6490_priv_data = {
 	.driver_name = "qcm6490",
 	.dapm_widgets = qcs6490_dapm_widgets,
 	.num_dapm_widgets = ARRAY_SIZE(qcs6490_dapm_widgets),
-	.num_wsa_spkr = 2;
+	.dapm_routes = qcs6490_dapm_routes,
+	.num_dapm_routes = ARRAY_SIZE(qcs6490_dapm_routes),
+	.num_wsa_spkr = 2,
 	.wcd_jack = true,
 };
 
@@ -848,21 +952,25 @@ static struct snd_soc_common qcs6490_priv_data = {
 	.driver_name = "qcs6490",
 	.dapm_widgets = qcs6490_dapm_widgets,
 	.num_dapm_widgets = ARRAY_SIZE(qcs6490_dapm_widgets),
-	.num_wsa_spkr = 2;
+	.dapm_routes = qcs6490_dapm_routes,
+	.num_dapm_routes = ARRAY_SIZE(qcs6490_dapm_routes),
+	.num_wsa_spkr = 2,
 	.wcd_jack = true,
 };
 
 static struct snd_soc_common qcs8275_priv_data = {
 	.driver_name = "qcs8300",
-	.dapm_widgets = qcs6490_dapm_widgets,
-	.num_dapm_widgets = ARRAY_SIZE(qcs6490_dapm_widgets),
+	.dapm_widgets = sa8775p_dapm_widgets,
+	.num_dapm_widgets = ARRAY_SIZE(sa8775p_dapm_widgets),
 };
 
 static struct snd_soc_common sc8280xp_priv_data = {
 	.driver_name = "sc8280xp",
 	.dapm_widgets = qcs6490_dapm_widgets,
 	.num_dapm_widgets = ARRAY_SIZE(qcs6490_dapm_widgets),
-	.num_wsa_spkr = 2;
+	.dapm_routes = qcs6490_dapm_routes,
+	.num_dapm_routes = ARRAY_SIZE(qcs6490_dapm_routes),
+	.num_wsa_spkr = 2,
 	.wcd_jack = true,
 };
 
@@ -870,7 +978,9 @@ static struct snd_soc_common sm8450_priv_data = {
 	.driver_name = "sm8450",
 	.dapm_widgets = qcs6490_dapm_widgets,
 	.num_dapm_widgets = ARRAY_SIZE(qcs6490_dapm_widgets),
-	.num_wsa_spkr = 2;
+	.dapm_routes = qcs6490_dapm_routes,
+	.num_dapm_routes = ARRAY_SIZE(qcs6490_dapm_routes),
+	.num_wsa_spkr = 2,
 	.wcd_jack = true,
 };
 
@@ -878,7 +988,9 @@ static struct snd_soc_common sm8550_priv_data = {
 	.driver_name = "sm8550",
 	.dapm_widgets = qcs6490_dapm_widgets,
 	.num_dapm_widgets = ARRAY_SIZE(qcs6490_dapm_widgets),
-	.num_wsa_spkr = 2;
+	.dapm_routes = qcs6490_dapm_routes,
+	.num_dapm_routes = ARRAY_SIZE(qcs6490_dapm_routes),
+	.num_wsa_spkr = 2,
 	.wcd_jack = true,
 };
 
@@ -886,7 +998,9 @@ static struct snd_soc_common sm8650_priv_data = {
 	.driver_name = "sm8650",
 	.dapm_widgets = qcs6490_dapm_widgets,
 	.num_dapm_widgets = ARRAY_SIZE(qcs6490_dapm_widgets),
-	.num_wsa_spkr = 2;
+	.dapm_routes = qcs6490_dapm_routes,
+	.num_dapm_routes = ARRAY_SIZE(qcs6490_dapm_routes),
+	.num_wsa_spkr = 2,
 	.wcd_jack = true,
 };
 
@@ -894,15 +1008,19 @@ static struct snd_soc_common sm8750_priv_data = {
 	.driver_name = "sm8750",
 	.dapm_widgets = qcs6490_dapm_widgets,
 	.num_dapm_widgets = ARRAY_SIZE(qcs6490_dapm_widgets),
-	.num_wsa_spkr = 2;
+	.dapm_routes = qcs6490_dapm_routes,
+	.num_dapm_routes = ARRAY_SIZE(qcs6490_dapm_routes),
+	.num_wsa_spkr = 2,
 	.wcd_jack = true,
 };
 
 static struct snd_soc_common x1e80100_priv_data = {
 	.driver_name = "x1e80100",
-	.dapm_widgets = qcs6490_dapm_widgets,
-	.num_dapm_widgets = ARRAY_SIZE(qcs6490_dapm_widgets),
-	.num_wsa_spkr = 4;
+	.dapm_widgets = glymur_dapm_widgets,
+	.num_dapm_widgets = ARRAY_SIZE(glymur_dapm_widgets),
+	.dapm_routes = glymur_dapm_routes,
+	.num_dapm_routes = ARRAY_SIZE(glymur_dapm_routes),
+	.num_wsa_spkr = 4,
 	.wcd_jack = true,
 };
 
