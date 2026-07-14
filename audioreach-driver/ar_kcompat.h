@@ -82,4 +82,17 @@
 # define AR_MODULE_IMPORT_NS(ns)	MODULE_IMPORT_NS(ns)
 #endif
 
+/* dev->dma_coherent direct field access changed in newer kernels. */
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(7, 2, 0)
+# define AR_HAVE_DEV_SET_DMA_COHERENT 1
+#else
+# define AR_HAVE_DEV_SET_DMA_COHERENT 0
+#endif
+
+#if AR_HAVE_DEV_SET_DMA_COHERENT
+# define AR_SET_DMA_COHERENT(dev) dev_set_dma_coherent(dev)
+#else
+# define AR_SET_DMA_COHERENT(dev) ((dev)->dma_coherent = true)
+#endif
+
 #endif /* __AR_KCOMPAT_H__ */
