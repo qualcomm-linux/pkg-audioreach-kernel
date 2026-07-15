@@ -2,6 +2,7 @@
 // Copyright (c) 2021, Linaro Limited
 // Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
 
+#include "ar_kcompat.h"
 #include <linux/init.h>
 #include <linux/kernel.h>
 #include <linux/module.h>
@@ -834,7 +835,7 @@ static int q6apm_audio_mem_probe(struct platform_device *pdev)
 	dev_info(dev, "%s: SMMU is %s\n", __func__,
 		 (!msm_audio_mem_data->smmu_enabled) ? "Disabled" : "Enabled");
 
-	dev->dma_coherent = true;
+	AR_SET_DMA_COHERENT(dev);
 	if (msm_audio_mem_data->smmu_enabled) {
 		/* Get SMMU SID information from Devicetree */
 		smmu_sid_mask = QCOM_SMMU_SID_MASK;
@@ -928,4 +929,4 @@ void q6apm_audio_mem_exit(void)
 
 MODULE_DESCRIPTION("Q6APM audio mem driver");
 MODULE_LICENSE("GPL");
-MODULE_IMPORT_NS("DMA_BUF");
+AR_MODULE_IMPORT_NS(DMA_BUF);

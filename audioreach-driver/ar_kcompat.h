@@ -67,4 +67,32 @@
 	static int name(struct gpr_resp_pkt *data, void *priv, int op)
 #endif
 
+
+/*
+ * MODULE_IMPORT_NS syntax changed in kernel 6.13:
+ *   - < 6.13 : MODULE_IMPORT_NS(DMA_BUF)    (unquoted token)
+ *   - >= 6.13: MODULE_IMPORT_NS("DMA_BUF")  (quoted string)
+ *
+ * AR_MODULE_IMPORT_NS wraps this difference so the driver builds
+ * correctly on both old and new kernels.
+ */
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 13, 0)
+# define AR_MODULE_IMPORT_NS(ns)	MODULE_IMPORT_NS(#ns)
+#else
+# define AR_MODULE_IMPORT_NS(ns)	MODULE_IMPORT_NS(ns)
+#endif
+
+/* dev->dma_coherent direct field access changed in newer kernels. */
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(7, 2, 0)
+# define AR_HAVE_DEV_SET_DMA_COHERENT 1
+#else
+# define AR_HAVE_DEV_SET_DMA_COHERENT 0
+#endif
+
+#if AR_HAVE_DEV_SET_DMA_COHERENT
+# define AR_SET_DMA_COHERENT(dev) dev_set_dma_coherent(dev)
+#else
+# define AR_SET_DMA_COHERENT(dev) ((dev)->dma_coherent = true)
+#endif
+
 #endif /* __AR_KCOMPAT_H__ */
