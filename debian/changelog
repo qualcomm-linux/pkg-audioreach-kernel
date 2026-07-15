@@ -1,8 +1,9 @@
-audioreach-kernel (1.1.0-0qli+staging1~) UNRELEASED; urgency=medium
+audioreach-kernel (1.1.0-0qli+staging1) forky; urgency=medium
 
+  [ Sairamreddy Bojja ]
   * New upstream release
 
- -- Sairamreddy Bojja <sbojja@qti.qualcomm.com>  Wed, 15 Jul 2026 05:30:37 +0530
+ -- root <root@d6d800c5ed2c>  Wed, 15 Jul 2026 12:05:21 +0000
 
 audioreach-kernel (1.0.1-0qli+staging1) forky; urgency=medium
 
