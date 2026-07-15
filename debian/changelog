@@ -1,8 +1,9 @@
-audioreach-kernel (1.1.0-0qli+staging1~bpo13+1~) UNRELEASED; urgency=medium
+audioreach-kernel (1.1.0-0qli+staging1~bpo13+1) trixie; urgency=medium
 
+  [ Sairamreddy Bojja ]
   * New upstream release
 
- -- Sairamreddy Bojja <sbojja@qti.qualcomm.com>  Wed, 15 Jul 2026 05:39:07 +0530
+ -- root <root@dff65824af96>  Wed, 15 Jul 2026 12:11:11 +0000
 
 audioreach-kernel (1.0.1-0qli+staging1~bpo13+1) trixie; urgency=medium
 
