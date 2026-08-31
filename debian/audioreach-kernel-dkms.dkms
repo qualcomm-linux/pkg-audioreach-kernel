@@ -8,5 +8,8 @@ DEST_MODULE_LOCATION[0]="/extras/dkms"
 AUTOINSTALL="yes"
 BUILD_EXCLUSIVE_KERNEL_MIN="6.18"
 
+# Skip kernels that do not have ASoC (covers cloud kernels)
+BUILD_EXCLUSIVE_CONFIG="CONFIG_SND_SOC"
+
 MAKE[0]="make -C ${kernel_source_dir} M=${dkms_tree}/${PACKAGE_NAME}/${PACKAGE_VERSION}/build/audioreach-driver modules VENDOR_QCOM=1"
 CLEAN="make -C ${kernel_source_dir} M=${dkms_tree}/${PACKAGE_NAME}/${PACKAGE_VERSION}/build/audioreach-driver clean"
