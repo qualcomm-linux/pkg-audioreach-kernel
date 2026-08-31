@@ -2,8 +2,12 @@ Source: audioreach-kernel
 Section: kernel
 Priority: optional
 Maintainer: Sairamreddy Bojja <sbojja@qti.qualcomm.com>
-Build-Depends: debhelper-compat (= 13), dh-sequence-dkms, cpio
 Rules-Requires-Root: no
+Build-Depends:
+ debhelper-compat (= 13),
+ dh-dkms,
+ dh-sequence-dkms,
+ cpio,
 Standards-Version: 4.7.2
 Homepage: https://github.com/AudioReach/audioreach-kernel
 
