@@ -10,6 +10,8 @@ Build-Depends:
 Standards-Version: 4.7.2
 Testsuite: autopkgtest-pkg-dkms
 Homepage: https://github.com/AudioReach/audioreach-kernel
+Vcs-Browser: https://github.com/qualcomm-linux/pkg-audioreach-kernel
+Vcs-Git: https://github.com/qualcomm-linux/pkg-audioreach-kernel.git
 
 Package: audioreach-kernel-dkms
 Architecture: arm64
