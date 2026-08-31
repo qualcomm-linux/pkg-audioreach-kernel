@@ -1,8 +1,17 @@
 audioreach-kernel (1.1.0-0qli+staging2~) UNRELEASED; urgency=medium
 
-  * Unreleased changes
+  * d/rules: Stage only the files needed to build the DKMS module.
+  * d/audioreach-config.install: Deploy into usr/lib.
+  * d/control: Avoid non-free section.
+  * d/control: Add dh-dkms build-dep.
+  * d/control: Drop implicit fields.
+  * d/control: Add initial pkg-dkms autopkgtests.
+  * d/control: Recommends linux-headers from -dkms package.
+  * d/control: wrap-and-sort.
+  * d/control: Arch:all for -config/-dev packages and Mulit-Arch:foreign.
+  * d/audioreach-kernel-dkms: Drop invalid assumption about VFIO dependency.
 
- -- Debusine Action Bot <noreply@bot.invalid>  Wed, 15 Jul 2026 12:07:21 +0000
+ -- Lukas Märdian <slyon@debian.org>  Mon, 31 Aug 2026 10:58:10 +0200
 
 audioreach-kernel (1.1.0-0qli+staging1) forky; urgency=medium
 
