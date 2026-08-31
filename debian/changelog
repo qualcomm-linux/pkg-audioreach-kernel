@@ -1,5 +1,6 @@
-audioreach-kernel (1.1.0-0qli+staging2~) UNRELEASED; urgency=medium
+audioreach-kernel (1.1.0-0qli+staging2) forky; urgency=medium
 
+  [ Lukas Märdian ]
   * d/audioreach-config.install: Deploy into usr/lib.
   * d/audioreach-kernel-dkms: Drop invalid assumption about VFIO dependency.
   * d/audioreach-kernel-dkms: Avoid kernels without CONFIG_SND_SOC,
@@ -19,7 +20,7 @@ audioreach-kernel (1.1.0-0qli+staging2~) UNRELEASED; urgency=medium
   * d/rules: Stage only the files needed to build the DKMS module.
   * d/rules: Cleanup.
 
- -- Lukas Märdian <slyon@debian.org>  Mon, 31 Aug 2026 16:16:21 +0200
+ -- Debusine Action Bot <noreply@bot.invalid>  Mon, 31 Aug 2026 14:24:45 +0000
 
 audioreach-kernel (1.1.0-0qli+staging1) forky; urgency=medium
 
