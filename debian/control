@@ -17,6 +17,7 @@ Depends:
  ${misc:Depends},
 Recommends:
  linux-headers-generic | linux-headers,
+Provides: audioreach-kernel
 Description: AudioReach kernel drivers (DKMS)
  AudioReach Kernel provides out-of-tree Linux kernel drivers
  that enable communication between the AudioReach signal
