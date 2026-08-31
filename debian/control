@@ -32,7 +32,8 @@ Description: AudioReach kernel drivers (DKMS)
 
 Package: audioreach-config
 Architecture: arm64
-Depends: ${misc:Depends}
+Depends:
+ ${misc:Depends},
 Description: AudioReach userspace configuration
  This package contains:
   - udev rules
@@ -45,4 +46,5 @@ Description: Development headers for AudioReach kernel drivers
  build userspace applications or kernel modules that integrate
  with AudioReach kernel drivers.
 Section: libdevel
-Depends: ${misc:Depends}
+Depends:
+ ${misc:Depends},
