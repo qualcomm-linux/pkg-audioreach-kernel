@@ -31,7 +31,7 @@ Description: AudioReach kernel drivers (DKMS)
  modules for supported kernel versions.
 
 Package: audioreach-config
-Architecture: arm64
+Architecture: all
 Depends:
  ${misc:Depends},
 Description: AudioReach userspace configuration
@@ -40,7 +40,8 @@ Description: AudioReach userspace configuration
   - modprobe configuration
 
 Package: audioreach-kernel-dev
-Architecture: arm64
+Architecture: all
+Multi-Arch: foreign
 Description: Development headers for AudioReach kernel drivers
  This package provides header files and interfaces required to
  build userspace applications or kernel modules that integrate
