@@ -1,6 +1,8 @@
 Source: audioreach-kernel
 Section: kernel
 Maintainer: Sairamreddy Bojja <sbojja@qti.qualcomm.com>
+Uploaders:
+ Lukas Märdian <lukas.maerdian@oss.qualcomm.com>
 Build-Depends:
  debhelper-compat (= 13),
  dh-dkms,
@@ -15,7 +17,7 @@ Depends:
  dkms,
  ${misc:Depends},
 Recommends:
- linux-headers-generic | linux-headers,
+ linux-headers-arm64
 Provides: audioreach-kernel
 Description: AudioReach kernel drivers (DKMS)
  AudioReach Kernel provides out-of-tree Linux kernel drivers
