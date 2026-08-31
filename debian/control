@@ -1,5 +1,5 @@
 Source: audioreach-kernel
-Section: non-free/kernel
+Section: kernel
 Priority: optional
 Maintainer: Sairamreddy Bojja <sbojja@qti.qualcomm.com>
 Build-Depends: debhelper-compat (= 13), dh-sequence-dkms, cpio
