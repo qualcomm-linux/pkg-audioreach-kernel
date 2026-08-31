@@ -5,28 +5,15 @@ include /usr/share/dpkg/pkg-info.mk
 DKMS_STAGED := debian/audioreach-kernel-dkms/usr/src/audioreach-kernel-$(DEB_VERSION_UPSTREAM)
 
 %:
-	dh $@ --with dkms
+	dh $@
 
 override_dh_install:
 	mkdir -p $(DKMS_STAGED)
-	# Stage only the files needed to build the DKMS module; exclude
-	# documentation, license texts and VCS metadata to avoid
-	# lintian complaints (extra-license-file, package-contains-
-	# documentation-outside-usr-share-doc).
-	find . \
-		-path ./debian -prune -o \
-		-path ./.pc -prune -o \
-		-path ./.git -prune -o \
-		-path ./.github -prune -o \
-		-path ./dsp -prune -o \
-		-path ./ipc -prune -o \
-		-name ".gitignore" -prune -o \
-		-name "LICENSE" -prune -o \
-		-name "NOTICE" -prune -o \
-		-name "CODE-OF-CONDUCT.md" -prune -o \
-		-name "CONTRIBUTING.md" -prune -o \
-		-name "README.md" -prune -o \
-		-print0 | cpio -0p $(DKMS_STAGED)/
+	# Stage only the files needed to build the DKMS module
+	cp -a audioreach-driver include Makefile $(DKMS_STAGED)/
+	find $(DKMS_STAGED) \( -name '*.o' -o -name '*.ko' -o -name '*.cmd' \
+		-o -name '*.mod' -o -name '*.mod.c' -o -name 'Module.symvers' \
+		-o -name 'modules.order' -o -name '.gitignore' \) -delete
 	dh_install
 
 override_dh_dkms:

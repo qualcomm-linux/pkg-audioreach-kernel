@@ -5,7 +5,6 @@ Build-Depends:
  debhelper-compat (= 13),
  dh-dkms,
  dh-sequence-dkms,
- cpio,
 Standards-Version: 4.7.2
 Testsuite: autopkgtest-pkg-dkms
 Homepage: https://github.com/AudioReach/audioreach-kernel
