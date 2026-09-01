@@ -1,4 +1,4 @@
-PACKAGE_NAME="audioreach-kernel"
+PACKAGE_NAME="audioreach"
 PACKAGE_VERSION="#MODULE_VERSION#"
 
 BUILT_MODULE_NAME[0]="audioreach_driver"

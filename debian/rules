@@ -2,7 +2,7 @@
 
 include /usr/share/dpkg/pkg-info.mk
 
-DKMS_STAGED := debian/audioreach-kernel-dkms/usr/src/audioreach-kernel-$(DEB_VERSION_UPSTREAM)
+DKMS_STAGED := debian/audioreach-dkms/usr/src/audioreach-$(DEB_VERSION_UPSTREAM)
 
 %:
 	dh $@
