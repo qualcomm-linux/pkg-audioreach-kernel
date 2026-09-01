@@ -1,8 +1,12 @@
-audioreach-kernel (1.1.0-0qli+staging3~) UNRELEASED; urgency=medium
+audioreach-dkms (1.1.0-0qli+staging3~) UNRELEASED; urgency=medium
 
-  * Unreleased changes
+  * Rename source package to audioreach-dkms, keeping the upstream name
+    and repository as audioreach-kernel.
+  * d/control: Rename audioreach-kernel-dkms to audioreach-dkms and
+    audioreach-kernel-dev to audioreach-linux-dev
+  * d/audioreach-dkms.dkms: Use "audioreach" as the DKMS PACKAGE_NAME.
 
- -- Debusine Action Bot <noreply@bot.invalid>  Mon, 31 Aug 2026 14:27:50 +0000
+ -- Lukas Märdian <lukas.maerdian@oss.qualcomm.com>  Tue, 01 Sep 2026 14:27:46 +0200
 
 audioreach-kernel (1.1.0-0qli+staging2) forky; urgency=medium
 
