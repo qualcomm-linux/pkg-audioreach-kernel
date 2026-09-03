@@ -1,8 +1,9 @@
 audioreach-dkms (1.1.0-0qli+staging4~) UNRELEASED; urgency=medium
 
-  * Unreleased changes
+  * d/control: Fold -config into -dkms.
+  * d/control: Cleanup.
 
- -- Debusine Action Bot <noreply@bot.invalid>  Tue, 01 Sep 2026 12:45:58 +0000
+ -- Lukas Märdian <lukas.maerdian@oss.qualcomm.com>  Thu, 03 Sep 2026 11:52:08 +0200
 
 audioreach-dkms (1.1.0-0qli+staging3) forky; urgency=medium
 
