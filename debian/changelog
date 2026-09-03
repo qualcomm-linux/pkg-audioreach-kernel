@@ -1,8 +1,10 @@
-audioreach-dkms (1.1.0-0qli+staging5~) UNRELEASED; urgency=medium
+audioreach-dkms (1.1.0-0qli1~) UNRELEASED; urgency=medium
 
-  * Unreleased changes
+  * Rebuild for QLI.
+  * d/gbp.conf: Update for QLI branch.
+  * d/control: Recommend linux-headers-arm64 from -dkms package.
 
- -- Debusine Action Bot <noreply@bot.invalid>  Thu, 03 Sep 2026 09:56:57 +0000
+ -- Lukas Märdian <lukas.maerdian@oss.qualcomm.com>  Thu, 03 Sep 2026 12:22:53 +0200
 
 audioreach-dkms (1.1.0-0qli+staging4) forky; urgency=medium
 
