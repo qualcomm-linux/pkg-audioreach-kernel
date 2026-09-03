@@ -4,6 +4,58 @@ audioreach-kernel (1.1.0-0qli+staging1~bpo13+2~) UNRELEASED; urgency=medium
 
  -- root <root@092a457957f7>  Wed, 15 Jul 2026 12:13:15 +0000
 
+audioreach-dkms (1.1.0-0qli1) forky; urgency=medium
+
+  [ Lukas Märdian ]
+  * Rebuild for QLI.
+  * d/gbp.conf: Update for QLI branch.
+  * d/control: Recommend linux-headers-arm64 from -dkms package.
+
+ -- Debusine Action Bot <noreply@bot.invalid>  Thu, 03 Sep 2026 10:30:57 +0000
+
+audioreach-dkms (1.1.0-0qli+staging4) forky; urgency=medium
+
+  [ Lukas Märdian ]
+  * d/control: Fold -config into -dkms.
+  * d/control: Cleanup.
+
+ -- Debusine Action Bot <noreply@bot.invalid>  Thu, 03 Sep 2026 09:54:12 +0000
+
+audioreach-dkms (1.1.0-0qli+staging3) forky; urgency=medium
+
+  [ Lukas Märdian ]
+  * Rename source package to audioreach-dkms, keeping the upstream name
+    and repository as audioreach-kernel.
+  * d/control: Rename audioreach-kernel-dkms to audioreach-dkms and
+    audioreach-kernel-dev to audioreach-linux-dev
+  * d/audioreach-dkms.dkms: Use "audioreach" as the DKMS PACKAGE_NAME.
+
+ -- Debusine Action Bot <noreply@bot.invalid>  Tue, 01 Sep 2026 12:42:55 +0000
+
+audioreach-kernel (1.1.0-0qli+staging2) forky; urgency=medium
+
+  [ Lukas Märdian ]
+  * d/audioreach-config.install: Deploy into usr/lib.
+  * d/audioreach-kernel-dkms: Drop invalid assumption about VFIO dependency.
+  * d/audioreach-kernel-dkms: Avoid kernels without CONFIG_SND_SOC,
+    e.g. -cloud kernel during autopkgtest.
+  * d/audioreach-kernel-dkms: Use Debian's conventional updates/dkms path.
+  * d/control: Avoid non-free section.
+  * d/control: Add dh-dkms build-dep.
+  * d/control: Drop implicit fields.
+  * d/control: Add initial pkg-dkms autopkgtests.
+  * d/control: Recommends linux-headers from -dkms package.
+  * d/control: wrap-and-sort.
+  * d/control: Arch:all for -config/-dev packages and Multi-Arch:foreign.
+  * d/control: Add Provides, as per DKMS convention.
+  * d/control: Add myself as an uploader.
+  * d/control: Add Vcs-* fields.
+  * d/copyright: Update according to markings.
+  * d/rules: Stage only the files needed to build the DKMS module.
+  * d/rules: Cleanup.
+
+ -- Debusine Action Bot <noreply@bot.invalid>  Mon, 31 Aug 2026 14:24:45 +0000
+
 audioreach-kernel (1.1.0-0qli+staging1~bpo13+1) trixie; urgency=medium
 
   [ Sairamreddy Bojja ]
@@ -23,4 +75,4 @@ audioreach-kernel (1.0.1-0qli+staging1) forky; urgency=medium
   [ Agathe Porte ]
   * Initial release.
 
- -- root <root@253fe909be83>  Fri, 03 Jul 2026 11:14:56 +0000
+ -- Debusine Action Bot <noreply@bot.invalid>  Fri, 03 Jul 2026 11:14:56 +0000
