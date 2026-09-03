@@ -1,9 +1,10 @@
-audioreach-dkms (1.1.0-0qli+staging4~) UNRELEASED; urgency=medium
+audioreach-dkms (1.1.0-0qli+staging4) forky; urgency=medium
 
+  [ Lukas Märdian ]
   * d/control: Fold -config into -dkms.
   * d/control: Cleanup.
 
- -- Lukas Märdian <lukas.maerdian@oss.qualcomm.com>  Thu, 03 Sep 2026 11:52:08 +0200
+ -- Debusine Action Bot <noreply@bot.invalid>  Thu, 03 Sep 2026 09:54:12 +0000
 
 audioreach-dkms (1.1.0-0qli+staging3) forky; urgency=medium
 
