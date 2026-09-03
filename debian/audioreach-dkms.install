@@ -1,0 +1,2 @@
+debian/audioreach.rules usr/lib/udev/rules.d/
+debian/audioreach-blacklist.conf usr/lib/modprobe.d/

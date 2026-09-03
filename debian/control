@@ -5,7 +5,6 @@ Uploaders:
  Lukas Märdian <lukas.maerdian@oss.qualcomm.com>
 Build-Depends:
  debhelper-compat (= 13),
- dh-dkms,
  dh-sequence-dkms,
 Standards-Version: 4.7.2
 Testsuite: autopkgtest-pkg-dkms
@@ -16,7 +15,6 @@ Vcs-Git: https://github.com/qualcomm-linux/pkg-audioreach-kernel.git
 Package: audioreach-dkms
 Architecture: arm64
 Depends:
- dkms,
  ${misc:Depends},
 Recommends:
  linux-headers-arm64
@@ -32,15 +30,6 @@ Description: AudioReach kernel drivers (DKMS)
  .
  This package uses DKMS to automatically build and install the
  modules for supported kernel versions.
-
-Package: audioreach-config
-Architecture: all
-Depends:
- ${misc:Depends},
-Description: AudioReach userspace configuration
- This package contains:
-  - udev rules
-  - modprobe configuration
 
 Package: audioreach-linux-dev
 Architecture: all

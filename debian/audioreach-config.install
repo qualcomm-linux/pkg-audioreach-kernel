@@ -1,2 +1,0 @@
-debian/audioreach.rules usr/lib/udev/rules.d/
-debian/audioreach-config.conf usr/lib/modprobe.d/
