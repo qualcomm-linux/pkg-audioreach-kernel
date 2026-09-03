@@ -13,11 +13,9 @@ Vcs-Browser: https://github.com/qualcomm-linux/pkg-audioreach-kernel
 Vcs-Git: https://github.com/qualcomm-linux/pkg-audioreach-kernel.git
 
 Package: audioreach-dkms
-Architecture: arm64
+Architecture: all
 Depends:
  ${misc:Depends},
-Recommends:
- linux-headers-arm64
 Description: AudioReach kernel drivers (DKMS)
  AudioReach Kernel provides out-of-tree Linux kernel drivers
  that enable communication between the AudioReach signal
@@ -33,13 +31,15 @@ Description: AudioReach kernel drivers (DKMS)
 
 Package: audioreach-linux-dev
 Architecture: all
-Multi-Arch: foreign
+Section: libdevel
+Depends:
+ ${misc:Depends},
 Provides:
  audioreach-uapi-dev,
 Description: Development headers for AudioReach kernel drivers
  This package provides header files and interfaces required to
  build userspace applications or kernel modules that integrate
  with AudioReach kernel drivers.
-Section: libdevel
-Depends:
- ${misc:Depends},
+ .
+ This package provides the Linux kernel headers needed to build
+ userspace libraries and applications for AudioReach (UAPI).
